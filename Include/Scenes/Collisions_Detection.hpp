@@ -38,9 +38,6 @@ public:
     Camera camera;
     CameraPos cameraPos;
 
-    // Shaders
-    //Shader_t* terrainShader;
-
     // Textures
     Texture* default_texture;
 

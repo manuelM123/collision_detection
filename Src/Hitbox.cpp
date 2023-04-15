@@ -56,16 +56,16 @@ float* Hitbox::createVertices(std::vector<float> hitbox_coordinates){
 
     static float vertices[] = {
         // Front face
-        hitbox_coordinates[0] - offset, hitbox_coordinates[2] - offset, hitbox_coordinates[4] - offset, // Bottom left | 0
-        hitbox_coordinates[1] + offset, hitbox_coordinates[2] - offset, hitbox_coordinates[4] - offset, // Bottom right | 1
-        hitbox_coordinates[0] - offset, hitbox_coordinates[3] + offset, hitbox_coordinates[4] - offset, // Top left | 2
-        hitbox_coordinates[1] + offset, hitbox_coordinates[3] + offset, hitbox_coordinates[4] - offset, // Top right | 3
+        hitbox_coordinates[0], hitbox_coordinates[2], hitbox_coordinates[4], // Bottom left | 0
+        hitbox_coordinates[1], hitbox_coordinates[2], hitbox_coordinates[4], // Bottom right | 1
+        hitbox_coordinates[0], hitbox_coordinates[3], hitbox_coordinates[4], // Top left | 2
+        hitbox_coordinates[1], hitbox_coordinates[3], hitbox_coordinates[4], // Top right | 3
 
         // Back face
-        hitbox_coordinates[0] - offset, hitbox_coordinates[2] - offset, hitbox_coordinates[5] + offset, // Bottom left | 4
-        hitbox_coordinates[1] + offset, hitbox_coordinates[2] - offset, hitbox_coordinates[5] + offset, // Bottom right | 5
-        hitbox_coordinates[0] - offset, hitbox_coordinates[3] + offset, hitbox_coordinates[5] + offset, // Top left | 6
-        hitbox_coordinates[1] + offset, hitbox_coordinates[3] + offset, hitbox_coordinates[5] + offset, // Top right | 7
+        hitbox_coordinates[0], hitbox_coordinates[2], hitbox_coordinates[5], // Bottom left | 4
+        hitbox_coordinates[1], hitbox_coordinates[2], hitbox_coordinates[5], // Bottom right | 5
+        hitbox_coordinates[0], hitbox_coordinates[3], hitbox_coordinates[5], // Top left | 6
+        hitbox_coordinates[1], hitbox_coordinates[3], hitbox_coordinates[5], // Top right | 7
     };
 
     return vertices;

@@ -292,11 +292,13 @@ void Model::hitboxCoordinates(aiMesh* mesh){
         if(mesh->mVertices[i].z > max_pos.z) max_pos.z = mesh->mVertices[i].z;
     }
 
+    float offset = 0.2f;
     // vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
-    hitbox_coordinates.push_back(min_pos.x);
-    hitbox_coordinates.push_back(max_pos.x);
-    hitbox_coordinates.push_back(min_pos.y);
-    hitbox_coordinates.push_back(max_pos.y);
-    hitbox_coordinates.push_back(min_pos.z);
-    hitbox_coordinates.push_back(max_pos.z);
+    // offset to make hitbox larger compared to the model
+    hitbox_coordinates.push_back(min_pos.x - offset);
+    hitbox_coordinates.push_back(max_pos.x + offset);
+    hitbox_coordinates.push_back(min_pos.y - offset);
+    hitbox_coordinates.push_back(max_pos.y + offset);
+    hitbox_coordinates.push_back(min_pos.z - offset);
+    hitbox_coordinates.push_back(max_pos.z + offset);
 }
