@@ -61,7 +61,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void processInput(GLFWwindow* window, Camera* camera, Shader_t* terrainShader, Texture* tex, Terrain* terrain_element)
+void processInput(GLFWwindow* window, Camera* camera)
 {
     // Exit program
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -87,16 +87,16 @@ void processInput(GLFWwindow* window, Camera* camera, Shader_t* terrainShader, T
         camera->ProcessKeyboard(DOWN, camera->deltaTime);
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        ystep += 0.01f;
+        ystep += 0.001f;
 
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        ystep -= 0.01f;
+        ystep -= 0.001f;
 
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        xstep += 0.01f;
+        xstep += 0.001f;
 
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        xstep -= 0.01f;
+        xstep -= 0.001f;
 }
 
 // Function that handles all the callbacks from the application

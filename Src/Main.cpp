@@ -21,7 +21,7 @@ int main()
     while (!glfwWindowShouldClose(scene.window))
     {
         // Function that deals with the input from the user
-        processInput(scene.window, &(scene.camera), scene.terrainShader, scene.default_texture, scene.terrain_element);
+        processInput(scene.window, &(scene.camera));
 
         // Rendering the scene
         scene.renderScene();

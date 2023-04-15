@@ -18,7 +18,7 @@
 #include "Model.h"
 #include "Skybox.h"
 #include "Framebuffer.h"
-#include "Terrain.h"
+#include "Hitbox.h"
 #include "Textures.h"
 
 #include <iostream>
@@ -39,13 +39,14 @@ public:
     CameraPos cameraPos;
 
     // Shaders
-    Shader_t* terrainShader;
+    //Shader_t* terrainShader;
 
     // Textures
     Texture* default_texture;
 
-    // Terrain
-    Terrain* terrain_element;
+    // Hitbox
+    Hitbox* hitbox;
+    Hitbox* hitbox2;
 
     Collisions_Detection();
     void setupScene();

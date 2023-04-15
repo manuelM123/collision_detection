@@ -43,11 +43,13 @@ class Model
         string directory;
         bool gammaCorrection;
 	    Material model_material;
+        std::vector<float> hitbox_coordinates;
 
 	    //================ Methods =====================
         // constructor, expects a filepath to a 3D model.
         Model();
         Model(string const& path, bool gamma = false);
+        //Model(string const& path, std::vector<float> hitbox_coordinates, bool gamma = false);
 
         // draws the model, and thus all its meshes
         void Draw(Shader& shader);
@@ -62,6 +64,7 @@ class Model
 	    //================ Methods ====================
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
         void loadModel(string const& path);
+        //void loadModel(string const& path, std::vector<float> hitbox_coordinates);
 
         // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
         void processNode(aiNode* node, const aiScene* scene);
@@ -77,6 +80,9 @@ class Model
 
         // Load a texture from file
         GLuint TextureFromFile(const char* path, const string& directory, bool gamma = false);
+
+        // processes hitbox coordinates of the loaded object
+        void hitboxCoordinates(aiMesh* mesh);
 };
 
 #endif

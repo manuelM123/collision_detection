@@ -1,10 +1,10 @@
 #include <Scenes/Collisions_Detection.hpp>
-#include <Terrain.h>
+#include <Hitbox.h>
 #include <Textures.h>
 
-// Variables that control the dimension of the terrain
-float xstep = 2.0f;
-float ystep = 1.0f;
+// Variables that control the positioning of the objects
+float xstep = 1.4f;
+float ystep = 0.0f;
 float zstep = 0.0f;
 int stop = 0;
 
@@ -26,7 +26,6 @@ void Collisions_Detection::setupScene()
     
     loadModels();
     loadShaders();
-    //loadFramebuffers();
     setupLightingAndMaterials();
     setupCamera();
 }
@@ -62,7 +61,7 @@ void Collisions_Detection::setupObjectProperties(Shader* objectShader, Camera ca
         glm::vec3(x,y,z), // translation
         glm::vec3(0.0f, 1.0f, 0.0f), // rotation axis
         0.0f,//(float)glfwGetTime() * 2.5f, // rotation angle
-        glm::vec3(1.0f) // scale
+        glm::vec3(0.4f) // scale
         );
 }
 
@@ -72,9 +71,6 @@ void Collisions_Detection::renderScene()
     // Update camera delta time
     camera.updateDeltaTime();
 
-    // Bind to framebuffer
-    //framebuffer->bind();
-
     // Clear the screen
     glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -83,9 +79,11 @@ void Collisions_Detection::renderScene()
     // --------------------------------------
     setupObjectProperties(objectShader, camera, 0);
     cube->Draw(*objectShader);
+    hitbox->Draw();
 
     setupObjectProperties(objectShader, camera, 1);
     cube2->Draw(*objectShader);
+    hitbox2->Draw();
 
     objectShader->setVec3("material.ambient", default_mat.Ambient);
     objectShader->setVec3("material.diffuse", default_mat.Diffuse);
@@ -93,12 +91,7 @@ void Collisions_Detection::renderScene()
     objectShader->setFloat("material.shininess", default_mat.Shininess);
 
     // Skybox 
-    skybox->Draw(*skyboxShader, camera);
-
-    // Bind to framebuffer
-    //framebuffer->unbind();
-
-    //framebuffer->drawQuad(*screenShader_noFilter);
+    //skybox->Draw(*skyboxShader, camera);
 
     // Swap the buffers
     glfwSwapBuffers(window);
@@ -111,8 +104,30 @@ void Collisions_Detection::loadModels()
     cube = new Model(cubePath);
     cube->changeTexture("wood_floor.png", "Media/Textures");
 
+    std::cout << "First cube hitbox coordinates: " << std::endl;
+
+    std::cout << "[";
+    for(int i = 0; i < cube->hitbox_coordinates.size(); i++)
+    {
+        std::cout << cube->hitbox_coordinates[i] << ",";
+    }
+    std::cout << "]" << std::endl;
+
+    hitbox = new Hitbox(cube->hitbox_coordinates);
+
     cube2 = new Model(cubePath);
     cube2->changeTexture("random.jpg", "Media/Textures");
+
+    std::cout << "Second cube hitbox coordinates: " << std::endl;
+
+    std::cout << "[";
+    for(int i = 0; i < cube->hitbox_coordinates.size(); i++)
+    {
+        std::cout << cube->hitbox_coordinates[i] << ",";
+    }
+    std::cout << "]" << std::endl;
+
+    hitbox2 = new Hitbox(cube2->hitbox_coordinates);
 
     skybox = new Skybox(skyboxPath);
 }

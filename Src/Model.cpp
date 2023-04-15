@@ -9,6 +9,13 @@ Model::Model(string const& path, bool gamma) : gammaCorrection(gamma)
     loadModel(path);
 }
 
+/*
+Model::Model(string const& path, std::vector<float> hitbox_coordinates, bool gamma) : gammaCorrection(gamma)
+{
+    loadModel(path, hitbox_coordinates);
+}
+*/
+
 void Model::Draw(Shader& shader)
 {
     for (GLuint i = 0; i < meshes.size(); i++)
@@ -137,6 +144,9 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<TextureMesh> emissiveMaps = loadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emissive");
     textures.insert(textures.end(), emissiveMaps.begin(), emissiveMaps.end());
 
+    // determine hitbox coordinates of the model
+    hitboxCoordinates(mesh);
+
     // return a mesh object created from the extracted mesh data
     return Mesh(vertices, indices, textures);
 }
@@ -262,4 +272,31 @@ void Model::changeTexture(const char* name, string dir) {
             }
         }
     }
+}
+
+void Model::hitboxCoordinates(aiMesh* mesh){
+    aiVector3D min_pos, max_pos;
+    min_pos = max_pos = mesh->mVertices[0];
+
+    for(GLuint i = 0; i < mesh->mNumVertices; i++){
+        // verifying the minimum and maximum values of the x axis
+        if(mesh->mVertices[i].x < min_pos.x) min_pos.x = mesh->mVertices[i].x;
+        if(mesh->mVertices[i].x > max_pos.x) max_pos.x = mesh->mVertices[i].x;
+
+        // verifying the minimum and maximum values of the y axis
+        if(mesh->mVertices[i].y < min_pos.y) min_pos.y = mesh->mVertices[i].y;
+        if(mesh->mVertices[i].y > max_pos.y) max_pos.y = mesh->mVertices[i].y;
+
+        // verifying the minimum and maximum values of the z axis
+        if(mesh->mVertices[i].z < min_pos.z) min_pos.z = mesh->mVertices[i].z;
+        if(mesh->mVertices[i].z > max_pos.z) max_pos.z = mesh->mVertices[i].z;
+    }
+
+    // vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
+    hitbox_coordinates.push_back(min_pos.x);
+    hitbox_coordinates.push_back(max_pos.x);
+    hitbox_coordinates.push_back(min_pos.y);
+    hitbox_coordinates.push_back(max_pos.y);
+    hitbox_coordinates.push_back(min_pos.z);
+    hitbox_coordinates.push_back(max_pos.z);
 }
