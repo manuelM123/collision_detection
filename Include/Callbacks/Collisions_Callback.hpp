@@ -8,6 +8,8 @@
 #include <Skybox.h>
 #include <Textures.h>
 #include <Scenes/Collisions_Detection.hpp>
+#include <Hitbox.h>
+#include <Model.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -61,7 +63,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void processInput(GLFWwindow* window, Camera* camera)
+void processInput(GLFWwindow* window, Camera* camera, Model* cube2, Hitbox* hitbox2)
 {
     // Exit program
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -86,17 +88,58 @@ void processInput(GLFWwindow* window, Camera* camera)
     if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
         camera->ProcessKeyboard(DOWN, camera->deltaTime);
 
-    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        ystep += 0.001f;
+    // hitbox coordinates vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
 
-    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        ystep -= 0.001f;
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
+       ystep += 0.001f;
+       cube2->hitbox_coordinates[2] += 0.001f;
+       cube2->hitbox_coordinates[3] += 0.001f;
 
-    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        xstep += 0.001f;
+       // print hitbox coordinates
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[2] << " " << cube2->hitbox_coordinates[3] << " " << std::endl;
+    }
 
-    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        xstep -= 0.001f;
+    if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
+       ystep -= 0.001f;
+       cube2->hitbox_coordinates[2] -= 0.001f;
+       cube2->hitbox_coordinates[3] -= 0.001f;
+
+       // print hitbox coordinates
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[2] << " " << cube2->hitbox_coordinates[3] << " " << std::endl;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+       xstep += 0.001f;
+       cube2->hitbox_coordinates[0] += 0.001f;
+       cube2->hitbox_coordinates[1] += 0.001f;
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[0] << " " << cube2->hitbox_coordinates[1] << " " << std::endl;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+       xstep -= 0.001f;
+       cube2->hitbox_coordinates[0] -= 0.001f;
+       cube2->hitbox_coordinates[1] -= 0.001f;
+
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[0] << " " << cube2->hitbox_coordinates[1] << " " << std::endl;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
+       zstep += 0.001f;
+       cube2->hitbox_coordinates[4] += 0.001f;
+       cube2->hitbox_coordinates[5] += 0.001f;
+
+       // print hitbox coordinates
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[4] << " " << cube2->hitbox_coordinates[5] << " " << std::endl;
+    }
+
+    if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
+       zstep -= 0.001f;
+       cube2->hitbox_coordinates[4] -= 0.001f;
+       cube2->hitbox_coordinates[5] -= 0.001f;
+
+       // print hitbox coordinates
+       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[4] << " " << cube2->hitbox_coordinates[5] << " " << std::endl;
+    }
 }
 
 // Function that handles all the callbacks from the application

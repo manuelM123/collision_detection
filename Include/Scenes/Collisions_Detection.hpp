@@ -45,6 +45,10 @@ public:
     Hitbox* hitbox;
     Hitbox* hitbox2;
 
+    // Models
+    Model* cube;
+    Model* cube2;
+
     Collisions_Detection();
     void setupScene();
     void renderScene();
@@ -55,6 +59,7 @@ private:
 
     // File paths
     const char* cubePath = "Media/Objects/Cube/cube.obj";
+    const char* movingcubePath = "Media/Objects/Moving_cube/moving_cube.obj";
     const char* skyboxPath = "Media/Skyboxes/skybox_sky/";
 
     // Shaders
@@ -64,8 +69,6 @@ private:
     Shader* screenShader_noFilter;
 
     // Models
-    Model* cube;
-    Model* cube2;
     Skybox* skybox;
 
     // Materials

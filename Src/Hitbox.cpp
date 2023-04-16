@@ -4,15 +4,6 @@
 Hitbox::Hitbox(std::vector<float> hitbox_coordinates){
     float* vertices = createVertices(hitbox_coordinates);
     int* indices = createIndices();
-    std::cout << "Hitbox Coordinates" << std::endl;
-    
-    // print vertices
-    for(int i = 0; i < 24; i++){
-        std::cout << vertices[i] << "|";
-    }
-
-    std::cout << std::endl;
-
     setupHitbox(vertices, indices);
 }
 
@@ -54,19 +45,19 @@ void Hitbox::Draw(){
 float* Hitbox::createVertices(std::vector<float> hitbox_coordinates){
     float offset = 0.2f;
 
-    static float vertices[] = {
-        // Front face
-        hitbox_coordinates[0], hitbox_coordinates[2], hitbox_coordinates[4], // Bottom left | 0
-        hitbox_coordinates[1], hitbox_coordinates[2], hitbox_coordinates[4], // Bottom right | 1
-        hitbox_coordinates[0], hitbox_coordinates[3], hitbox_coordinates[4], // Top left | 2
-        hitbox_coordinates[1], hitbox_coordinates[3], hitbox_coordinates[4], // Top right | 3
+    float* vertices = new float[24];
 
-        // Back face
-        hitbox_coordinates[0], hitbox_coordinates[2], hitbox_coordinates[5], // Bottom left | 4
-        hitbox_coordinates[1], hitbox_coordinates[2], hitbox_coordinates[5], // Bottom right | 5
-        hitbox_coordinates[0], hitbox_coordinates[3], hitbox_coordinates[5], // Top left | 6
-        hitbox_coordinates[1], hitbox_coordinates[3], hitbox_coordinates[5], // Top right | 7
-    };
+    // Front face
+    vertices[0] = hitbox_coordinates[0]; vertices[1] = hitbox_coordinates[2]; vertices[2] = hitbox_coordinates[4];
+    vertices[3] = hitbox_coordinates[1]; vertices[4] = hitbox_coordinates[2]; vertices[5] = hitbox_coordinates[4];
+    vertices[6] = hitbox_coordinates[0]; vertices[7] = hitbox_coordinates[3]; vertices[8] = hitbox_coordinates[4];
+    vertices[9] = hitbox_coordinates[1]; vertices[10] = hitbox_coordinates[3]; vertices[11] = hitbox_coordinates[4];
+
+    // Back face
+    vertices[12] = hitbox_coordinates[0]; vertices[13] = hitbox_coordinates[2]; vertices[14] = hitbox_coordinates[5];
+    vertices[15] = hitbox_coordinates[1]; vertices[16] = hitbox_coordinates[2]; vertices[17] = hitbox_coordinates[5];
+    vertices[18] = hitbox_coordinates[0]; vertices[19] = hitbox_coordinates[3]; vertices[20] = hitbox_coordinates[5];
+    vertices[21] = hitbox_coordinates[1]; vertices[22] = hitbox_coordinates[3]; vertices[23] = hitbox_coordinates[5];
 
     return vertices;
 }
@@ -96,4 +87,15 @@ int* Hitbox::createIndices(){
     };
 
     return indices;
+}
+
+// update moving hitbox coordinates
+// vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
+void Hitbox::updateVertices(std::vector<float>& hitbox_coordinates, float xstep, float ystep){
+
+    // this is not updating correctly
+    hitbox_coordinates[0] += xstep;
+    hitbox_coordinates[1] += xstep;
+    hitbox_coordinates[2] += ystep;
+    hitbox_coordinates[3] += ystep;
 }

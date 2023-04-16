@@ -3,7 +3,7 @@
 #include <Textures.h>
 
 // Variables that control the positioning of the objects
-float xstep = 1.4f;
+float xstep = 0.0f;
 float ystep = 0.0f;
 float zstep = 0.0f;
 int stop = 0;
@@ -32,37 +32,31 @@ void Collisions_Detection::setupScene()
 
 void Collisions_Detection::setupObjectProperties(Shader* objectShader, Camera camera, int objectID)
 {
-    float x = xstep;
-    float y = ystep;
-    float z = zstep;
-
-    // static object
-    if(objectID == 0)
+    if(objectID == 1)
     {
-       x = 0.0f;
-       y = 0.0f;
-       z = 0.0f;
-    }
-
-    if(stop != 2)
-    {
-        std::cout << "ID: " << objectID << std::endl;
-        std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
-        std::cout << "xstep: " << xstep << " ystep: " << ystep << " zstep: " << zstep << std::endl;
-        std::cout << "-------------------------------------------------" << std::endl;
-        stop = stop + 1;
-    }
-
-    objectShader->use();
-    setView(objectShader, camera.GetViewMatrix());
-    setProjection(objectShader, glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    setModel(
-        objectShader, // shader
-        glm::vec3(x,y,z), // translation
-        glm::vec3(0.0f, 1.0f, 0.0f), // rotation axis
-        0.0f,//(float)glfwGetTime() * 2.5f, // rotation angle
-        glm::vec3(0.4f) // scale
+        objectShader->use();
+        setView(objectShader, camera.GetViewMatrix());
+        setProjection(objectShader, glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        setModel(
+            objectShader, // shader
+            glm::vec3(xstep,ystep,zstep), // translation
+            glm::vec3(0.0f, 1.0f, 0.0f), // rotation axis
+            0.0f,//(float)glfwGetTime() * 2.5f, // rotation angle
+            glm::vec3(1.0f) // scale
         );
+    }
+    else{
+        objectShader->use();
+        setView(objectShader, camera.GetViewMatrix());
+        setProjection(objectShader, glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        setModel(
+            objectShader, // shader
+            glm::vec3(0.0f,0.0f,0.0f), // translation
+            glm::vec3(0.0f, 1.0f, 0.0f), // rotation axis
+            0.0f,//(float)glfwGetTime() * 2.5f, // rotation angle
+            glm::vec3(1.0f) // scale
+        );
+    }
 }
 
 // Function that renders the scene
@@ -115,15 +109,15 @@ void Collisions_Detection::loadModels()
 
     hitbox = new Hitbox(cube->hitbox_coordinates);
 
-    cube2 = new Model(cubePath);
+    cube2 = new Model(movingcubePath);
     cube2->changeTexture("random.jpg", "Media/Textures");
 
     std::cout << "Second cube hitbox coordinates: " << std::endl;
 
     std::cout << "[";
-    for(int i = 0; i < cube->hitbox_coordinates.size(); i++)
+    for(int i = 0; i < cube2->hitbox_coordinates.size(); i++)
     {
-        std::cout << cube->hitbox_coordinates[i] << ",";
+        std::cout << cube2->hitbox_coordinates[i] << ",";
     }
     std::cout << "]" << std::endl;
 

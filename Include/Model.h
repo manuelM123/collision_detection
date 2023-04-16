@@ -43,6 +43,8 @@ class Model
         string directory;
         bool gammaCorrection;
 	    Material model_material;
+        
+        // Hitbox coordinates of the model
         std::vector<float> hitbox_coordinates;
 
 	    //================ Methods =====================

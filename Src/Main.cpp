@@ -21,7 +21,7 @@ int main()
     while (!glfwWindowShouldClose(scene.window))
     {
         // Function that deals with the input from the user
-        processInput(scene.window, &(scene.camera));
+        processInput(scene.window, &(scene.camera), scene.cube2, scene.hitbox2);
 
         // Rendering the scene
         scene.renderScene();
