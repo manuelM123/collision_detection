@@ -88,14 +88,3 @@ int* Hitbox::createIndices(){
 
     return indices;
 }
-
-// update moving hitbox coordinates
-// vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
-void Hitbox::updateVertices(std::vector<float>& hitbox_coordinates, float xstep, float ystep){
-
-    // this is not updating correctly
-    hitbox_coordinates[0] += xstep;
-    hitbox_coordinates[1] += xstep;
-    hitbox_coordinates[2] += ystep;
-    hitbox_coordinates[3] += ystep;
-}

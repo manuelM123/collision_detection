@@ -14,6 +14,9 @@ int main()
     // Initialize class object 
     Collisions_Detection scene;
 
+    // Offset for objects movement and hitbox coordinates update
+    float offset = 0.01f;
+
     // Function that handles all the callbacks from the application
     processCallbacks(scene.window, &(scene.camera), &(scene.cameraPos));
 
@@ -21,7 +24,7 @@ int main()
     while (!glfwWindowShouldClose(scene.window))
     {
         // Function that deals with the input from the user
-        processInput(scene.window, &(scene.camera), scene.cube2, scene.hitbox2);
+        processInput(scene.window, &(scene.camera), scene.moving_model, scene.hitbox2, offset);
 
         // Rendering the scene
         scene.renderScene();

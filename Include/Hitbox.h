@@ -23,8 +23,6 @@ public:
     void Draw();
     float* createVertices(std::vector<float> hitbox_coordinates);
     int* createIndices();
-    void updateVertices(std::vector<float>& hitbox_coordinates, float xstep, float ystep);
-
 private:
     // VAO, VBO and EBO for the hitbox
     unsigned int hitboxVAO, hitboxVBO, hitboxEBO;

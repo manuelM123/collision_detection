@@ -46,8 +46,8 @@ public:
     Hitbox* hitbox2;
 
     // Models
-    Model* cube;
-    Model* cube2;
+    Model* static_model;
+    Model* moving_model;
 
     Collisions_Detection();
     void setupScene();
@@ -58,8 +58,8 @@ private:
     glm::vec3 cameraInitialTarget;
 
     // File paths
-    const char* cubePath = "Media/Objects/Cube/cube.obj";
-    const char* movingcubePath = "Media/Objects/Moving_cube/moving_cube.obj";
+    const char* staticmodelPath = "Media/Objects/Cube/cube.obj";
+    const char* movingstaticmodelPath = "Media/Objects/Moving_cube/moving_cube.obj";
     const char* skyboxPath = "Media/Skyboxes/skybox_sky/";
 
     // Shaders
@@ -85,6 +85,7 @@ private:
     void setupCamera();
     void setupLightingAndMaterials();
     void setupObjectProperties(Shader* objectShader, Camera camera, int objectID);
+    bool detectCollision();
 };
 
 #endif

@@ -72,17 +72,23 @@ void Collisions_Detection::renderScene()
     // Draw objects
     // --------------------------------------
     setupObjectProperties(objectShader, camera, 0);
-    cube->Draw(*objectShader);
+    static_model->Draw(*objectShader);
     hitbox->Draw();
 
     setupObjectProperties(objectShader, camera, 1);
-    cube2->Draw(*objectShader);
+    moving_model->Draw(*objectShader);
     hitbox2->Draw();
 
     objectShader->setVec3("material.ambient", default_mat.Ambient);
     objectShader->setVec3("material.diffuse", default_mat.Diffuse);
     objectShader->setVec3("material.specular", default_mat.Specular);
     objectShader->setFloat("material.shininess", default_mat.Shininess);
+
+    // Collision Detection
+    // --------------------------------------
+    bool collision = detectCollision();
+    if(collision)
+        std::cout << "Colided!" << std::endl;
 
     // Skybox 
     //skybox->Draw(*skyboxShader, camera);
@@ -95,33 +101,33 @@ void Collisions_Detection::renderScene()
 // Function that loads the necessary models for the scene
 void Collisions_Detection::loadModels()
 {
-    cube = new Model(cubePath);
-    cube->changeTexture("wood_floor.png", "Media/Textures");
+    static_model = new Model(staticmodelPath);
+    static_model->changeTexture("wood_floor.png", "Media/Textures");
 
-    std::cout << "First cube hitbox coordinates: " << std::endl;
+    std::cout << "First model hitbox coordinates: " << std::endl;
 
     std::cout << "[";
-    for(int i = 0; i < cube->hitbox_coordinates.size(); i++)
+    for(int i = 0; i < static_model->hitbox_coordinates.size(); i++)
     {
-        std::cout << cube->hitbox_coordinates[i] << ",";
+        std::cout << static_model->hitbox_coordinates[i] << ",";
     }
     std::cout << "]" << std::endl;
 
-    hitbox = new Hitbox(cube->hitbox_coordinates);
+    hitbox = new Hitbox(static_model->hitbox_coordinates);
 
-    cube2 = new Model(movingcubePath);
-    cube2->changeTexture("random.jpg", "Media/Textures");
+    moving_model = new Model(movingstaticmodelPath);
+    moving_model->changeTexture("random.jpg", "Media/Textures");
 
-    std::cout << "Second cube hitbox coordinates: " << std::endl;
+    std::cout << "Second model hitbox coordinates: " << std::endl;
 
     std::cout << "[";
-    for(int i = 0; i < cube2->hitbox_coordinates.size(); i++)
+    for(int i = 0; i < moving_model->hitbox_coordinates.size(); i++)
     {
-        std::cout << cube2->hitbox_coordinates[i] << ",";
+        std::cout << moving_model->hitbox_coordinates[i] << ",";
     }
     std::cout << "]" << std::endl;
 
-    hitbox2 = new Hitbox(cube2->hitbox_coordinates);
+    hitbox2 = new Hitbox(moving_model->hitbox_coordinates);
 
     skybox = new Skybox(skyboxPath);
 }
@@ -176,4 +182,20 @@ void Collisions_Detection::setupWindow()
     window_setup(window);
     glad_setup();
 	printGPUinfo();
+}
+
+bool Collisions_Detection::detectCollision()
+{
+    bool collisionX, collisionY, collisionZ = false;
+
+    // verifies if x coordinates of both hitboxes hit
+    collisionX = moving_model->hitbox_coordinates[0] <= static_model->hitbox_coordinates[1] && moving_model->hitbox_coordinates[1] >= static_model->hitbox_coordinates[0];
+    
+    // verifies if y coordinates of both hitboxes hit
+    collisionY = moving_model->hitbox_coordinates[2] <= static_model->hitbox_coordinates[3] && moving_model->hitbox_coordinates[3] >= static_model->hitbox_coordinates[2];
+
+    // verifies if z coordinates of both hitboxes hit
+    collisionZ = moving_model->hitbox_coordinates[4] <= static_model->hitbox_coordinates[5] && moving_model->hitbox_coordinates[5] >= static_model->hitbox_coordinates[4];
+
+    return collisionX && collisionY && collisionZ;
 }

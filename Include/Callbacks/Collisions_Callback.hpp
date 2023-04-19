@@ -63,7 +63,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void processInput(GLFWwindow* window, Camera* camera, Model* cube2, Hitbox* hitbox2)
+void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbox* hitbox2, float offset)
 {
     // Exit program
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -91,54 +91,57 @@ void processInput(GLFWwindow* window, Camera* camera, Model* cube2, Hitbox* hitb
     // hitbox coordinates vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
 
     if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-       ystep += 0.001f;
-       cube2->hitbox_coordinates[2] += 0.001f;
-       cube2->hitbox_coordinates[3] += 0.001f;
+       ystep += offset;
+       moving_model->hitbox_coordinates[2] += offset;
+       moving_model->hitbox_coordinates[3] += offset;
 
        // print hitbox coordinates
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[2] << " " << cube2->hitbox_coordinates[3] << " " << std::endl;
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[2] << " " << moving_model->hitbox_coordinates[3] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-       ystep -= 0.001f;
-       cube2->hitbox_coordinates[2] -= 0.001f;
-       cube2->hitbox_coordinates[3] -= 0.001f;
+       ystep -= offset;
+       moving_model->hitbox_coordinates[2] -= offset;
+       moving_model->hitbox_coordinates[3] -= offset;
 
        // print hitbox coordinates
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[2] << " " << cube2->hitbox_coordinates[3] << " " << std::endl;
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[2] << " " << moving_model->hitbox_coordinates[3] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-       xstep += 0.001f;
-       cube2->hitbox_coordinates[0] += 0.001f;
-       cube2->hitbox_coordinates[1] += 0.001f;
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[0] << " " << cube2->hitbox_coordinates[1] << " " << std::endl;
+       xstep += offset;
+       moving_model->hitbox_coordinates[0] += offset;
+       moving_model->hitbox_coordinates[1] += offset;
+
+       // print hitbox coordinates
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[0] << " " << moving_model->hitbox_coordinates[1] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-       xstep -= 0.001f;
-       cube2->hitbox_coordinates[0] -= 0.001f;
-       cube2->hitbox_coordinates[1] -= 0.001f;
+       xstep -= offset;
+       moving_model->hitbox_coordinates[0] -= offset;
+       moving_model->hitbox_coordinates[1] -= offset;
 
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[0] << " " << cube2->hitbox_coordinates[1] << " " << std::endl;
+       // print hitbox coordinates
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[0] << " " << moving_model->hitbox_coordinates[1] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
-       zstep += 0.001f;
-       cube2->hitbox_coordinates[4] += 0.001f;
-       cube2->hitbox_coordinates[5] += 0.001f;
+       zstep += offset;
+       moving_model->hitbox_coordinates[4] += offset;
+       moving_model->hitbox_coordinates[5] += offset;
 
        // print hitbox coordinates
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[4] << " " << cube2->hitbox_coordinates[5] << " " << std::endl;
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[4] << " " << moving_model->hitbox_coordinates[5] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
-       zstep -= 0.001f;
-       cube2->hitbox_coordinates[4] -= 0.001f;
-       cube2->hitbox_coordinates[5] -= 0.001f;
+       zstep -= offset;
+       moving_model->hitbox_coordinates[4] -= offset;
+       moving_model->hitbox_coordinates[5] -= offset;
 
        // print hitbox coordinates
-       std::cout << "Hitbox coordinates: " << cube2->hitbox_coordinates[4] << " " << cube2->hitbox_coordinates[5] << " " << std::endl;
+       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[4] << " " << moving_model->hitbox_coordinates[5] << " " << std::endl;
     }
 }
 
