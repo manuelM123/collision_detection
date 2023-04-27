@@ -16,6 +16,7 @@
 #include "Scene.h"
 #include "Textures.h"
 #include "Model.h"
+#include "Mesh.h"
 #include "Skybox.h"
 #include "Framebuffer.h"
 #include "Hitbox.h"
@@ -86,6 +87,7 @@ private:
     void setupLightingAndMaterials();
     void setupObjectProperties(Shader* objectShader, Camera camera, int objectID);
     bool detectCollision();
+    bool satCollision();
 };
 
 #endif

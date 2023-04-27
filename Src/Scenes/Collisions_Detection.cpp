@@ -3,7 +3,7 @@
 #include <Textures.h>
 
 // Variables that control the positioning of the objects
-float xstep = 0.0f;
+float xstep = 3.0f;
 float ystep = 0.0f;
 float zstep = 0.0f;
 int stop = 0;
@@ -25,6 +25,15 @@ void Collisions_Detection::setupScene()
 	cameraInitialTarget = glm::vec3(7.0f, 2.0f, 0.0f);
     
     loadModels();
+
+    //move object to 3 units in the x axis from the origin
+    moving_model->hitbox_coordinates[0] += xstep;
+    moving_model->hitbox_coordinates[1] += xstep;
+
+    for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+           moving_model->vertices_sat[i].x += xstep;
+    }
+
     loadShaders();
     setupLightingAndMaterials();
     setupCamera();
@@ -87,9 +96,16 @@ void Collisions_Detection::renderScene()
     // Collision Detection
     // --------------------------------------
     bool collision = detectCollision();
-    if(collision)
-        std::cout << "Colided!" << std::endl;
+    if(collision){
+        std::cout << "HitBox collided!" << std::endl;
 
+         bool satCollisionDetection = satCollision();
+         if(satCollisionDetection)
+            std::cout << "SAT Collision!" << std::endl;
+    }
+
+   
+    
     // Skybox 
     //skybox->Draw(*skyboxShader, camera);
 
@@ -184,6 +200,7 @@ void Collisions_Detection::setupWindow()
 	printGPUinfo();
 }
 
+// vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
 bool Collisions_Detection::detectCollision()
 {
     bool collisionX, collisionY, collisionZ = false;
@@ -198,4 +215,60 @@ bool Collisions_Detection::detectCollision()
     collisionZ = moving_model->hitbox_coordinates[4] <= static_model->hitbox_coordinates[5] && moving_model->hitbox_coordinates[5] >= static_model->hitbox_coordinates[4];
 
     return collisionX && collisionY && collisionZ;
+}
+
+// Function to calculate the projection of a model onto an axis
+void calculateProjection(const std::vector<aiVector3D>& vertices, const aiVector3D& normal, float& minProjection, float& maxProjection) {
+    minProjection = INFINITY;
+    maxProjection = -INFINITY;
+
+    // Project each vertex onto the axis and update the min/max projections
+    for (const auto& vertex : vertices) {
+        float projection = vertex * normal;
+        if (projection < minProjection) {
+            minProjection = projection;
+        }
+        if (projection > maxProjection) {
+            maxProjection = projection;
+        }
+    }
+}
+
+bool Collisions_Detection::satCollision(){
+
+    // Get the vertices and face normals for both models
+    auto& static_vertices = static_model->vertices_sat;
+    auto& moving_vertices = moving_model->vertices_sat;
+    auto& faceNormals_static = static_model->faceNormals;
+    auto& faceNormals_moving = moving_model->faceNormals;
+
+    // Loop over all the face normals for both models
+    for (const auto& normal : faceNormals_static) {
+        // Project both models onto the normal
+        float staticMin, staticMax, movingMin, movingMax;
+        calculateProjection(static_vertices, normal, staticMin, staticMax);
+        calculateProjection(moving_vertices, normal, movingMin, movingMax);
+
+        // Check for overlap
+        if (movingMax < staticMin || staticMax < movingMin) {
+            // No overlap, so the models don't collide
+            return false;
+        }
+    }
+
+    for (const auto& normal : faceNormals_moving) {
+        // Project both models onto the normal
+        float staticMin, staticMax, movingMin, movingMax;
+        calculateProjection(static_vertices, normal, staticMin, staticMax);
+        calculateProjection(moving_vertices, normal, movingMin, movingMax);
+
+        // Check for overlap
+        if (movingMax < staticMin || staticMax < movingMin) {
+            // No overlap, so the models don't collide
+            return false;
+        }
+    }
+
+    // If we get here, there is overlap on all the axes, so the models collide
+    return true;
 }

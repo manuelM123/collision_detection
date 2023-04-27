@@ -47,6 +47,13 @@ class Model
         // Hitbox coordinates of the model
         std::vector<float> hitbox_coordinates;
 
+        // SAT projection variables
+        float min_projection, max_projection;
+        aiMesh* mesh_to_use;
+        std::vector<aiVector3D> faceNormals;
+        std::vector<aiVector3D> vertices_sat;
+        std::vector<aiFace> faces_sat;
+
 	    //================ Methods =====================
         // constructor, expects a filepath to a 3D model.
         Model();
@@ -58,6 +65,9 @@ class Model
 	
         // change the diffuse texture of all meshes in the model
         void changeTexture(const char* name, string dir);
+
+        // process SAT projection of the vertices of the mesh
+        void getFaceNormals(aiMesh* mesh);
 
     private:
 	    //================ Attributes =================
@@ -85,6 +95,7 @@ class Model
 
         // processes hitbox coordinates of the loaded object
         void hitboxCoordinates(aiMesh* mesh);
+        
 };
 
 #endif

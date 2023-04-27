@@ -47,8 +47,9 @@ void Model::processNode(aiNode* node, const aiScene* scene)
     {
         // the node object only contains indices to index the actual objects in the scene. 
         // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
-        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(processMesh(mesh, scene));
+        //aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        mesh_to_use = scene->mMeshes[node->mMeshes[i]];
+        meshes.push_back(processMesh(mesh_to_use, scene));
     }
     // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
     for (GLuint i = 0; i < node->mNumChildren; i++)
@@ -107,16 +108,19 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
             vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 
         vertices.push_back(vertex);
+        vertices_sat.push_back(mesh->mVertices[i]);
     }
 
     // now wak through each of the mesh's faces and retrieve the corresponding vertex indices.
     for (GLuint i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
+
         // retrieve all indices of the face and store them in the indices vector
         for (GLuint j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
+    
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     model_material = loadMaterial(material);
@@ -146,6 +150,9 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
     // determine hitbox coordinates of the model
     hitboxCoordinates(mesh);
+
+    // get face normals
+    getFaceNormals(mesh);
 
     // return a mesh object created from the extracted mesh data
     return Mesh(vertices, indices, textures);
@@ -301,4 +308,21 @@ void Model::hitboxCoordinates(aiMesh* mesh){
     hitbox_coordinates.push_back(max_pos.y + offset);
     hitbox_coordinates.push_back(min_pos.z - offset);
     hitbox_coordinates.push_back(max_pos.z + offset);
+}
+
+void Model::getFaceNormals(aiMesh* mesh){
+    // Get face normals for the mesh
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        aiFace face = mesh->mFaces[i];
+        faces_sat.push_back(face);
+        
+        // vertices_sat => [mesh->mVertices[0], ...]
+        aiVector3D vertex1 = mesh->mVertices[face.mIndices[0]];
+        aiVector3D vertex2 = mesh->mVertices[face.mIndices[1]];
+        aiVector3D vertex3 = mesh->mVertices[face.mIndices[2]];
+
+        aiVector3D faceNormal =  (vertex2 - vertex1) ^ (vertex3 - vertex1);
+        faceNormal.Normalize();
+        faceNormals.push_back(faceNormal);
+    }
 }

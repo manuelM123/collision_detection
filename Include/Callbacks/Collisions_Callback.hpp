@@ -95,8 +95,10 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        moving_model->hitbox_coordinates[2] += offset;
        moving_model->hitbox_coordinates[3] += offset;
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[2] << " " << moving_model->hitbox_coordinates[3] << " " << std::endl;
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+            moving_model->vertices_sat[i].y += offset;
+       }
     }
 
     if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
@@ -104,8 +106,10 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        moving_model->hitbox_coordinates[2] -= offset;
        moving_model->hitbox_coordinates[3] -= offset;
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[2] << " " << moving_model->hitbox_coordinates[3] << " " << std::endl;
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+            moving_model->vertices_sat[i].y -= offset;
+       }
     }
 
     if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
@@ -113,8 +117,22 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        moving_model->hitbox_coordinates[0] += offset;
        moving_model->hitbox_coordinates[1] += offset;
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[0] << " " << moving_model->hitbox_coordinates[1] << " " << std::endl;
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+           moving_model->vertices_sat[i].x += offset;
+       }
+
+       // update all normals of the moving_model
+       //moving_model->faceNormals.clear();
+       //for(int i = 0; i < moving_model->faces_sat.size(); i++){
+       //     aiFace face = moving_model->faces_sat[i];
+       //     aiVector3D vertex1 = moving_model->vertices_sat[face.mIndices[0]];
+       //     aiVector3D vertex2 = moving_model->vertices_sat[face.mIndices[1]];
+       //     aiVector3D vertex3 = moving_model->vertices_sat[face.mIndices[2]];
+       //     aiVector3D faceNormal = (vertex2 - vertex1) ^ (vertex3 - vertex1);
+       //     faceNormal.Normalize();
+       //     moving_model->faceNormals[i] = faceNormal;
+       //}
     }
 
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
@@ -122,17 +140,34 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        moving_model->hitbox_coordinates[0] -= offset;
        moving_model->hitbox_coordinates[1] -= offset;
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[0] << " " << moving_model->hitbox_coordinates[1] << " " << std::endl;
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+           moving_model->vertices_sat[i].x -= offset;
+       }
+
+       // update all normals of the moving_model
+       //moving_model->faceNormals.clear();
+       //for(int i = 0; i < moving_model->faces_sat.size(); i++){
+       //     aiFace face = moving_model->faces_sat[i];
+       //     aiVector3D vertex1 = moving_model->vertices_sat[face.mIndices[0]];
+       //     aiVector3D vertex2 = moving_model->vertices_sat[face.mIndices[1]];
+       //     aiVector3D vertex3 = moving_model->vertices_sat[face.mIndices[2]];
+       //     aiVector3D faceNormal = (vertex2 - vertex1) ^ (vertex3 - vertex1);
+       //     faceNormal.Normalize();
+       //     moving_model->faceNormals[i] = faceNormal;
+       //}
     }
 
     if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
        zstep += offset;
        moving_model->hitbox_coordinates[4] += offset;
        moving_model->hitbox_coordinates[5] += offset;
+       
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+            moving_model->vertices_sat[i].z += offset;
+       }
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[4] << " " << moving_model->hitbox_coordinates[5] << " " << std::endl;
     }
 
     if(glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS){
@@ -140,8 +175,10 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        moving_model->hitbox_coordinates[4] -= offset;
        moving_model->hitbox_coordinates[5] -= offset;
 
-       // print hitbox coordinates
-       //std::cout << "Hitbox coordinates: " << moving_model->hitbox_coordinates[4] << " " << moving_model->hitbox_coordinates[5] << " " << std::endl;
+       // update object vertices for SAT collision detection
+       for(int i = 0; i < moving_model->vertices_sat.size(); i++){
+            moving_model->vertices_sat[i].z -= offset;
+       }
     }
 }
 
