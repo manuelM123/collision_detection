@@ -211,8 +211,9 @@ bool Collisions_Detection::detectCollision()
 
 // Function to calculate the projection of a model onto an axis
 void calculateProjection(const std::vector<aiVector3D>& vertices, const aiVector3D& normal, float& minProjection, float& maxProjection) {
-    minProjection = INFINITY;
-    maxProjection = -INFINITY;
+    // Initialize the min/max projections to the first vertex projected onto the axis
+    minProjection = vertices[0] * normal;
+    maxProjection = vertices[0] * normal;
 
     // Project each vertex onto the axis and update the min/max projections
     for (const auto& vertex : vertices) {

@@ -42,8 +42,6 @@ void Hitbox::Draw(){
 // generate the vertices for the hitbox based on the coordinates provided
 // vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
 float* Hitbox::createVertices(std::vector<float> hitbox_coordinates){
-    float offset = 0.2f;
-
     float* vertices = new float[24];
 
     // Front face
