@@ -36,7 +36,6 @@ void Hitbox::Draw(){
     // render the hitbox
     glBindVertexArray(hitboxVAO);
     glLineWidth(4.0f); // line width of 2 pixels
-    glColor3f(1.0f, 0.0f, 0.0f); // red color
     glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
 }
 

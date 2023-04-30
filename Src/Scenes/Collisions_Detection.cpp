@@ -65,6 +65,9 @@ void Collisions_Detection::setupObjectProperties(Shader* objectShader, Camera ca
             0.0f,//(float)glfwGetTime() * 2.5f, // rotation angle
             glm::vec3(1.0f) // scale
         );
+
+        //objectShader->setBool("hitboxRenderColor", false);
+        //objectShader->setBool("satRenderColor", false);
     }
 }
 
@@ -97,15 +100,22 @@ void Collisions_Detection::renderScene()
     // --------------------------------------
     bool collision = detectCollision();
     if(collision){
-        std::cout << "HitBox collided!" << std::endl;
+        objectShader->setBool("hitboxRenderColor", true);
+        //std::cout << "HitBox collided!" << std::endl;
 
          bool satCollisionDetection = satCollision();
-         if(satCollisionDetection)
-            std::cout << "SAT Collision!" << std::endl;
+         if(satCollisionDetection){
+            objectShader->setBool("satRenderColor", true);
+            //std::cout << "SAT Collision!" << std::endl;
+         }
+         else{
+            objectShader->setBool("satRenderColor", false);
+         }
+    }
+    else{
+        objectShader->setBool("hitboxRenderColor", false);
     }
 
-   
-    
     // Skybox 
     //skybox->Draw(*skyboxShader, camera);
 
@@ -118,30 +128,12 @@ void Collisions_Detection::renderScene()
 void Collisions_Detection::loadModels()
 {
     static_model = new Model(staticmodelPath);
-    static_model->changeTexture("wood_floor.png", "Media/Textures");
-
-    std::cout << "First model hitbox coordinates: " << std::endl;
-
-    std::cout << "[";
-    for(int i = 0; i < static_model->hitbox_coordinates.size(); i++)
-    {
-        std::cout << static_model->hitbox_coordinates[i] << ",";
-    }
-    std::cout << "]" << std::endl;
+    //static_model->changeTexture("wood_floor.png", "Media/Textures");
 
     hitbox = new Hitbox(static_model->hitbox_coordinates);
 
     moving_model = new Model(movingstaticmodelPath);
-    moving_model->changeTexture("random.jpg", "Media/Textures");
-
-    std::cout << "Second model hitbox coordinates: " << std::endl;
-
-    std::cout << "[";
-    for(int i = 0; i < moving_model->hitbox_coordinates.size(); i++)
-    {
-        std::cout << moving_model->hitbox_coordinates[i] << ",";
-    }
-    std::cout << "]" << std::endl;
+    //moving_model->changeTexture("random.jpg", "Media/Textures");
 
     hitbox2 = new Hitbox(moving_model->hitbox_coordinates);
 

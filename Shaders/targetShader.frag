@@ -28,7 +28,8 @@ uniform vec3 objectColor;
 
 uniform Material material;
 uniform Light light; 
-
+uniform bool hitboxRenderColor;
+uniform bool satRenderColor;
 
 void main(){
 	// texture
@@ -51,5 +52,18 @@ void main(){
 
 	vec3 result = (ambient + diffuse + specular) * objectColor;
 	
-	FragColor = vec4(result, 1.0) * texture;
+	// hitboxes are colliding
+	if(hitboxRenderColor && !satRenderColor){
+		FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	}
+	else{
+		// hitbox is colliding and sat collision is detected
+		if(hitboxRenderColor && satRenderColor){
+			FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+		}
+
+		else{
+			FragColor = vec4(result, 1.0) * texture;
+		}
+	}
 }
