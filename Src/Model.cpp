@@ -281,6 +281,7 @@ void Model::changeTexture(const char* name, string dir) {
     }
 }
 
+// calculate hitbox coordinates based on min and max coordinates of the mesh on x,y,z axis
 void Model::hitboxCoordinates(aiMesh* mesh){
     aiVector3D min_pos, max_pos;
     min_pos = max_pos = mesh->mVertices[0];

@@ -236,19 +236,22 @@ bool Collisions_Detection::satCollision(){
     auto& faceNormals_moving = moving_model->faceNormals;
 
     // Loop over all the face normals for both models
+    /*
     for (const auto& normal : faceNormals_static) {
         // Project both models onto the normal
         float staticMin, staticMax, movingMin, movingMax;
         calculateProjection(static_vertices, normal, staticMin, staticMax);
-        calculateProjection(moving_vertices, normal, movingMin, movingMax);
-
+        calculateProjection(moving_vertices, normal, movingMin, movingMax)
         // Check for overlap
         if (movingMax < staticMin || staticMax < movingMin) {
             // No overlap, so the models don't collide
             return false;
         }
     }
+    */
 
+    // Projection is only needed for the moving model since the static model is always at the origin
+    // The above calculation of the projection is only needed if we wanted to obtain all the projection axis within the world space
     for (const auto& normal : faceNormals_moving) {
         // Project both models onto the normal
         float staticMin, staticMax, movingMin, movingMax;
