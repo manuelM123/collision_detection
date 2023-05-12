@@ -192,6 +192,7 @@ void Collisions_Detection::setupWindow()
 	printGPUinfo();
 }
 
+// function that checks collision between two hitboxes
 // vector has the following order: [min_x, max_x, min_y, max_y, min_z, max_z]
 bool Collisions_Detection::detectCollision()
 {
@@ -227,6 +228,7 @@ void calculateProjection(const std::vector<aiVector3D>& vertices, const aiVector
     }
 }
 
+// Function that verifies if both objects collide using SAT algorithm
 bool Collisions_Detection::satCollision(){
 
     // Get the vertices and face normals for both models

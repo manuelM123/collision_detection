@@ -15,7 +15,7 @@ int main()
     Collisions_Detection scene;
 
     // Offset for objects movement and hitbox coordinates update
-    float offset = 0.01f;
+    float offset = 0.001f;
 
     // Function that handles all the callbacks from the application
     processCallbacks(scene.window, &(scene.camera), &(scene.cameraPos));

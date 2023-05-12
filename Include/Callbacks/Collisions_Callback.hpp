@@ -121,18 +121,6 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        for(int i = 0; i < moving_model->vertices_sat.size(); i++){
            moving_model->vertices_sat[i].x += offset;
        }
-
-       // update all normals of the moving_model
-       //moving_model->faceNormals.clear();
-       //for(int i = 0; i < moving_model->faces_sat.size(); i++){
-       //     aiFace face = moving_model->faces_sat[i];
-       //     aiVector3D vertex1 = moving_model->vertices_sat[face.mIndices[0]];
-       //     aiVector3D vertex2 = moving_model->vertices_sat[face.mIndices[1]];
-       //     aiVector3D vertex3 = moving_model->vertices_sat[face.mIndices[2]];
-       //     aiVector3D faceNormal = (vertex2 - vertex1) ^ (vertex3 - vertex1);
-       //     faceNormal.Normalize();
-       //     moving_model->faceNormals[i] = faceNormal;
-       //}
     }
 
     if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
@@ -144,18 +132,6 @@ void processInput(GLFWwindow* window, Camera* camera, Model* moving_model, Hitbo
        for(int i = 0; i < moving_model->vertices_sat.size(); i++){
            moving_model->vertices_sat[i].x -= offset;
        }
-
-       // update all normals of the moving_model
-       //moving_model->faceNormals.clear();
-       //for(int i = 0; i < moving_model->faces_sat.size(); i++){
-       //     aiFace face = moving_model->faces_sat[i];
-       //     aiVector3D vertex1 = moving_model->vertices_sat[face.mIndices[0]];
-       //     aiVector3D vertex2 = moving_model->vertices_sat[face.mIndices[1]];
-       //     aiVector3D vertex3 = moving_model->vertices_sat[face.mIndices[2]];
-       //     aiVector3D faceNormal = (vertex2 - vertex1) ^ (vertex3 - vertex1);
-       //     faceNormal.Normalize();
-       //     moving_model->faceNormals[i] = faceNormal;
-       //}
     }
 
     if(glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS){
